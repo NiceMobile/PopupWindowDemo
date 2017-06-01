@@ -1,17 +1,13 @@
 package com.example.administrator.popupwindowdemo;
 
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Display;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -24,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     //是否支持沉浸式状态栏
     private final static boolean IS_IMMERSIVE_STATUS_BAR;
+
     static {
         IS_IMMERSIVE_STATUS_BAR = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
@@ -54,18 +51,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void showPopupWindow(View viewLayout){
-        View popuView = View.inflate(this, R.layout.activity_popu_layout, null);
+    private void showPopupWindow(View viewLayout) {
+        View popView = View.inflate(this, R.layout.activity_popu_layout, null);
         /*WindowManager windowManager = getWindowManager();
         Display display = windowManager.getDefaultDisplay();
         if(mPopupWindow == null){
-            mPopupWindow = new PopupWindow(popuView, display.getWidth(), display.getHeight(), true);
+            mPopupWindow = new PopupWindow(popView, display.getWidth(), display.getHeight(), true);
         }
         WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
         layoutParams.alpha = 0.5f;
         getWindow().setAttributes(layoutParams);
         mPopupWindow.showAsDropDown(viewLayout);
-        popuView.setOnTouchListener(new View.OnTouchListener() {
+        popView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 closePopupWindow();
@@ -82,29 +79,28 @@ public class MainActivity extends AppCompatActivity {
             //获得焦点，true时点击事件不会向上传递由Activity处理
             mPopupWindow.setFocusable(true);
         }
-        mPopupWindow.setContentView(popuView);
+        mPopupWindow.setContentView(popView);
         mPopupWindow.showAtLocation(viewLayout, Gravity.RIGHT | Gravity.TOP, 0
-                ,IS_IMMERSIVE_STATUS_BAR ? viewLayout.getHeight() : viewLayout.getHeight() + StatusBarHeightUtil.getStatusBarHeight(this));
+                , IS_IMMERSIVE_STATUS_BAR ? viewLayout.getHeight() : viewLayout.getHeight() + StatusBarHeightUtil.getStatusBarHeight(this));
         mPopupWindow.update();
-        darkenBackground(0.6f);
+        changeBackground(0.6f);
         mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
 
             @Override
             public void onDismiss() {
-                darkenBackground(1f);
+                changeBackground(1f);
             }
         });
     }
 
-    private void darkenBackground(Float color){
+    private void changeBackground(Float alpha) {
         WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.alpha = color;
+        lp.alpha = alpha;
         getWindow().setAttributes(lp);
-
     }
 
     private void closePopupWindow() {
-        if(mPopupWindow != null && mPopupWindow.isShowing()){
+        if (mPopupWindow != null && mPopupWindow.isShowing()) {
             mPopupWindow.dismiss();
             mPopupWindow = null;
             WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
@@ -130,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void clickLeftButton(){
-        if(mToolbar != null) showPopupWindow(mToolbar);
+    private void clickLeftButton() {
+        if (mToolbar != null) showPopupWindow(mToolbar);
     }
 }
